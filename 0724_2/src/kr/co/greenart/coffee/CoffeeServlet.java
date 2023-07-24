@@ -81,12 +81,17 @@ public class CoffeeServlet extends HttpServlet {
 			// 이게 필요 없고 그냥 받아온 str 바로 mapper로 객체로 만들어주면 되네?
 			String json = gson.toJson(req.getParameter("json"));
 			String json2 = gson.toJson(str);
-
 			System.out.println("json 변환 형태 : " + json);
 			System.out.println("json 변환 형태2 : " + json2);
 			try {
-				Coffee coffee = mapper.readValue(json, Coffee.class);
-				dao.insertCoffee(coffee);
+				// json 직렬화 한걸로는 왜 안되고 원본 형태 넣으면 되는기지?
+				// gson으로 역직렬화
+//				Coffee coffee1 = gson.fromJson(json, Coffee.class);
+				Coffee coffee2 = gson.fromJson(str, Coffee.class);
+				// jackson으로 역직렬화
+//				Coffee coffee3 = mapper.readValue(json, Coffee.class);
+//				Coffee coffee4 = mapper.readValue(str, Coffee.class);
+//				dao.insertCoffee(coffee);
 				outputControl.makePassMessage(201, "정확하게 입력되어 sql에 행이 추가되었습니다!", resp);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
